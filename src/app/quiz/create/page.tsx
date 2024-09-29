@@ -1,5 +1,7 @@
 "use client";
 import { ChatInputComponent } from "@/components/chat-input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useState } from "react";
 interface Quiz {
   id: number;
@@ -25,9 +27,9 @@ const CreateQuiz = () => {
         body: JSON.stringify({ input }),
       });
       const data = await response.json();
-      console.log(data.quizzes);
+      console.log(data.event);
 
-      setQuizzes(data.quizzes);
+      setQuizzes(data.event.quizzes);
     } catch (error) {
       console.error("Error fetching quizzes:", error);
     }
@@ -42,12 +44,16 @@ const CreateQuiz = () => {
       />
       <div className="mt-4">
         {quizzes.map((quiz: Quiz) => (
-          <div key={quiz.id}>
+          <div key={quiz.id} className="border border-1 p-4 m-2">
             <h3>
               <span>{quiz.id}. </span>
               {quiz.question}
             </h3>
             <p>{quiz.answer}</p>
+            <div className="flex gap-3">
+              <Input className="w-full" />
+              <Button>Modify</Button>
+            </div>
           </div>
         ))}
       </div>
