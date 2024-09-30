@@ -1,17 +1,14 @@
-import { auth } from "../auth";
 import { AvatarPlaceholderComponent } from "./avatar-placeholder";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
-export default async function UserAvatar() {
-  const session = await auth();
-  if (!session) return null;
-  if (!session.user) return null;
+export default function UserAvatar({ image }: { image: string | null }) {
+  console.log("image", image);
 
   return (
-    <div className="w-fit px-1">
-      {session.user.image ? (
+    <div className="w-fit px-1 cursor-pointer">
+      {image ? (
         <Avatar>
-          <AvatarImage src={session.user.image} />
+          <AvatarImage src={image} />
         </Avatar>
       ) : (
         <AvatarPlaceholderComponent></AvatarPlaceholderComponent>
