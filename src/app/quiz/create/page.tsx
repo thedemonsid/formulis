@@ -2,6 +2,7 @@
 import { ChatInputComponent } from "@/components/chat-input";
 import { useState } from "react";
 import QuizComponent from "./_components/QuizComponent";
+import Loading from "@/app/loading";
 
 interface Quiz {
   id: number;
@@ -12,13 +13,14 @@ interface Quiz {
 const CreateQuiz = () => {
   const [input, setInput] = useState("");
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
-
+  const [loading, setLoading] = useState(false);
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await fetch("/api/quizzes", {
         method: "POST",
@@ -31,6 +33,7 @@ const CreateQuiz = () => {
       console.log(data);
 
       setQuizzes(data.event.quizzes);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching quizzes:", error);
     }
@@ -45,9 +48,13 @@ const CreateQuiz = () => {
         onSubmit={handleSubmit}
       />
       <div className="mt-4">
-        {quizzes.map((quiz: Quiz) => (
-          <QuizComponent key={quiz.id} quiz={quiz} setQuizzes={setQuizzes} />
-        ))}
+        {!loading ? (
+          quizzes.map((quiz: Quiz) => (
+            <QuizComponent key={quiz.id} quiz={quiz} setQuizzes={setQuizzes} />
+          ))
+        ) : (
+          <Loading></Loading>
+        )}
       </div>
     </div>
   );

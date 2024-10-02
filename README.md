@@ -1,3 +1,14 @@
+## Todo
+- [ ] Add a way to add questions manually
+
+
+
+
+
+
+
+
+
 # Formulis
 An Quiz App with a twist
 
